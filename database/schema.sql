@@ -20,6 +20,7 @@ CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(50) NOT NULL UNIQUE
 );
+
 CREATE TABLE expenses (
     expense_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -59,3 +60,15 @@ CREATE TABLE budgets (
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
+
+CREATE INDEX idx_expenses_user
+ON expenses(user_id);
+
+CREATE INDEX idx_expenses_category
+ON expenses(category_id);
+
+CREATE INDEX idx_incomes_user
+ON incomes(user_id);
+
+CREATE INDEX idx_budgets_user
+ON budgets(user_id);
