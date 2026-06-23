@@ -1,1 +1,22 @@
-﻿
+﻿CREATE DATABASE IF NOT EXISTS smart_budget;
+
+USE smart_budget;
+
+DROP TABLE IF EXISTS budgets;
+DROP TABLE IF EXISTS incomes;
+DROP TABLE IF EXISTS expenses;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL UNIQUE
+);
