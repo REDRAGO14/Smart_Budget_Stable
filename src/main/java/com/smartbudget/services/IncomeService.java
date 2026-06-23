@@ -16,6 +16,7 @@ public interface IncomeService {
     // Retrieves all recorded revenue entries for a specific user profile
     List<Income> getIncomesByUser(int userId);
 
+
     // Pure business logic validation method signature
     void validateIncome(Income income) throws ValidationException;
 

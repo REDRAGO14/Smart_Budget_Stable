@@ -13,6 +13,12 @@ import java.util.List;
  */
 
 public class IncomeServiceImpl implements IncomeService{
+    private final IncomeDAO incomeDAO;
+
+    public IncomeServiceImpl(IncomeDAO incomeDAO){
+        this.incomeDAO = incomeDAO;
+    }
+
     @Override
     public void addIncome(Income income) throws ValidationException{
         // Rule 1: Always validate before taking any action
@@ -48,13 +54,16 @@ public class IncomeServiceImpl implements IncomeService{
             }
         }
     }
+
+
+
     @Override
-    public List<Income> getIncomeByUser(int userId) {
+    public List<Income> getIncomesByUser(int userId) {
         // Safe baseline fallback
         if (userId <= 0) {
             return List.of();
         }
-        return IncomeDAO.getIncomeByUser(userId);
+        return incomeDAO.getIncomeByUser(userId);
 
     }
 

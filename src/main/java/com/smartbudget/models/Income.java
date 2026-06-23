@@ -1,4 +1,4 @@
-﻿package com.smartbudget.models;
+package com.smartbudget.models;
 
 import java.time.LocalDate;
 
@@ -13,8 +13,8 @@ public class Income {
     public Income() {}
 
     // All-Args Constructor
-    public Income(int incomeId, User user, double amount, String description, LocalDate incomeDate) {
-        this.incomeId = incomeId;
+    public Income( User user, double amount, String description, LocalDate incomeDate) {
+
         this.user = user;
         this.amount = amount;
         this.description = description;
