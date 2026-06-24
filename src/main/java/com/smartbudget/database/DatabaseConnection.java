@@ -19,3 +19,10 @@ public class DatabaseConnection {
         return null;
     }
 }
+public static Connection getConnection() {
+    try {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    } catch (SQLException e) {
+        return null;
+    }
+}
