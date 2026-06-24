@@ -72,3 +72,20 @@ public List getIncomeByUser(int userId) {
 if (rs.getDate("income_date") != null) {
     income.setIncomeDate(rs.getDate("income_date").toLocalDate());
 }
+public static boolean deleteIncome(int incomeId) {
+
+    String sql = "DELETE FROM incomes WHERE income_id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, incomeId);
+
+        return ps.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return false;
+}
