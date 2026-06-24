@@ -16,15 +16,23 @@ public class DatabaseConnection {
             "";
 
     public static Connection getConnection() {
-        return null;
+
+        try {
+
+            return DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASSWORD
+            );
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Database connection failed: "
+                            + e.getMessage()
+            );
+
+            return null;
+        }
     }
 }
-public static Connection getConnection() {
-    try {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    } catch (SQLException e) {
-        System.out.println("Database connection failed: " + e.getMessage());
-        return null;
-    }
-}
-System.out.println("Database connection failed: " + e.getMessage());
