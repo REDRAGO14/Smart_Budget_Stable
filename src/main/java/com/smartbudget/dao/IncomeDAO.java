@@ -1,13 +1,9 @@
- package com.smartbudget.dao;
+package com.smartbudget.dao;
 
 import com.smartbudget.database.DatabaseConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Date;
 import com.smartbudget.models.Income;
-import java.sql.ResultSet;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,58 +30,57 @@ public class IncomeDAO {
 
         return false;
     }
-}
-public List getIncomeByUser(int userId) {
 
-    List list = new ArrayList<>();
-    String sql = "SELECT * FROM incomes WHERE user_id = ?";
+    // GET INCOME BY USER
+    // GET INCOME BY USER (Fully mapped to Domain Objects)
+    public List getIncomeByUser(int userId) {
+        List list = new ArrayList<>();
+        String sql = "SELECT * FROM incomes WHERE user_id = ?";
 
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setInt(1, userId);
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Income income = new com.smartbudget.models.Income();
 
-        try (ResultSet rs = ps.executeQuery()) {
+                    // Map table columns directly into object properties
+                    income.setIncomeId(rs.getInt("income_id"));
+                    income.setAmount(rs.getDouble("amount"));
+                    income.setDescription(rs.getString("description"));
 
-            while (rs.next()) {
+                    // Convert legacy java.sql.Date to modern java.time.LocalDate if your model uses LocalDate
+                    if (rs.getDate("income_date") != null) {
+                        income.setIncomeDate(rs.getDate("income_date").toLocalDate());
+                    }
 
-                Income income = new Income();
-
-                income.setIncomeId(rs.getInt("income_id"));
-                income.setAmount(rs.getDouble("amount"));
-                income.setDescription(rs.getString("description"));
-
-                if (rs.getDate("income_date") != null) {
-                    income.setIncomeDate(rs.getDate("income_date").toLocalDate());
+                    list.add(income);
                 }
-
-                list.add(income);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return list;
     }
 
-    return list;
-}
-if (rs.getDate("income_date") != null) {
-    income.setIncomeDate(rs.getDate("income_date").toLocalDate());
-}
-public static boolean deleteIncome(int incomeId) {
+    // DELETE INCOME
+    public static boolean deleteIncome(int incomeId) {
 
-    String sql = "DELETE FROM incomes WHERE income_id = ?";
+        String sql = "DELETE FROM incomes WHERE income_id = ?";
 
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setInt(1, incomeId);
+            ps.setInt(1, incomeId);
+            return ps.executeUpdate() > 0;
 
-        return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-
-    return false;
 }
