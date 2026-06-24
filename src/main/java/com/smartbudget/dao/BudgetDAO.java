@@ -144,3 +144,20 @@ public double getSpentForPeriod(int userId, int month, int year) {
 
     return 0.0;
 }
+public boolean deleteBudget(int budgetId) {
+
+    String sql = "DELETE FROM budgets WHERE budget_id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, budgetId);
+
+        return ps.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return false;
+}
