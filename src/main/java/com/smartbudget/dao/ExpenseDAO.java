@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.smartbudget.models.Expense;
+import com.smartbudget.models.Category;
 public class ExpenseDAO {
 
     // ADD EXPENSE
@@ -60,3 +61,10 @@ public List<Expense> getExpensesByUser(int userId) {
 
     return list;
 }
+
+
+CategoryDAO categoryDAO = new CategoryDAO();
+
+int categoryId = rs.getInt("category_id");
+Category category = categoryDAO.getCategoryById(categoryId);
+expense.setCategory(category);
