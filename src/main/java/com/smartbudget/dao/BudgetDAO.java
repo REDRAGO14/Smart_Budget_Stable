@@ -81,3 +81,66 @@ public class BudgetDAO {
         return list;
     }
 }
+public Budget getBudgetForPeriod(int userId, int month, int year) {
+
+    String sql = "SELECT * FROM budgets WHERE user_id = ? AND month = ? AND year = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, userId);
+        ps.setInt(2, month);
+        ps.setInt(3, year);
+
+        try (ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+
+                Budget b = new Budget();
+
+                b.setBudgetId(rs.getInt("budget_id"));
+                b.setMonth(rs.getInt("month"));
+                b.setYear(rs.getInt("year"));
+                b.setAmount(rs.getDouble("amount"));
+
+                User placeholder = new User();
+                placeholder.setUserId(userId);
+
+                b.setUser(placeholder);
+
+                return b;
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
+
+public double getSpentForPeriod(int userId, int month, int year) {
+
+    String sql = "SELECT SUM(amount) AS total_spent FROM expenses " +
+            "WHERE user_id = ? AND EXTRACT(MONTH FROM expense_date) = ? AND EXTRACT(YEAR FROM expense_date) = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, userId);
+        ps.setInt(2, month);
+        ps.setInt(3, year);
+
+        try (ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getDouble("total_spent");
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return 0.0;
+}
