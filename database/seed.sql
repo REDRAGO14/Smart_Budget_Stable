@@ -31,3 +31,19 @@ VALUES
 ('Rent'),
 ('Education'),
 ('Entertainment');
+-- =========================
+-- INCOMES
+-- =========================
+INSERT INTO incomes (user_id, amount, description, income_date)
+VALUES 
+(1, 5000, 'Monthly Salary', '2026-06-01'),
+(2, 3000, 'Freelance Work', '2026-06-02');
+
+-- =========================
+-- EXPENSES
+-- =========================
+INSERT INTO expenses (user_id, category_id, amount, description, expense_date)
+VALUES 
+(1, 1, 200, 'Lunch', '2026-06-02'),
+(1, 2, 50, 'Bus fare', '2026-06-03'),
+(2, 3, 1000, 'Rent payment', '2026-06-05');
