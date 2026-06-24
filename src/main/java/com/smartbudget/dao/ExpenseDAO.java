@@ -1,4 +1,3 @@
-
 package com.smartbudget.dao;
 
 import com.smartbudget.database.DatabaseConnection;
