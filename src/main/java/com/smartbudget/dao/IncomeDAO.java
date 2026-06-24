@@ -55,6 +55,10 @@ public List getIncomeByUser(int userId) {
                 income.setAmount(rs.getDouble("amount"));
                 income.setDescription(rs.getString("description"));
 
+                if (rs.getDate("income_date") != null) {
+                    income.setIncomeDate(rs.getDate("income_date").toLocalDate());
+                }
+
                 list.add(income);
             }
         }
@@ -64,4 +68,7 @@ public List getIncomeByUser(int userId) {
     }
 
     return list;
+}
+if (rs.getDate("income_date") != null) {
+    income.setIncomeDate(rs.getDate("income_date").toLocalDate());
 }
