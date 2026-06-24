@@ -68,3 +68,18 @@ CategoryDAO categoryDAO = new CategoryDAO();
 int categoryId = rs.getInt("category_id");
 Category category = categoryDAO.getCategoryById(categoryId);
 expense.setCategory(category);
+
+public boolean deleteExpense(int expenseId) {
+    String sql = "DELETE FROM expenses WHERE expense_id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, expenseId);
+        return ps.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
