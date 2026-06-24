@@ -6,6 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Date;
+import com.smartbudget.models.Income;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IncomeDAO {
 
@@ -30,4 +34,34 @@ public class IncomeDAO {
 
         return false;
     }
+}
+public List getIncomeByUser(int userId) {
+
+    List list = new ArrayList<>();
+    String sql = "SELECT * FROM incomes WHERE user_id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, userId);
+
+        try (ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                Income income = new Income();
+
+                income.setIncomeId(rs.getInt("income_id"));
+                income.setAmount(rs.getDouble("amount"));
+                income.setDescription(rs.getString("description"));
+
+                list.add(income);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return list;
 }
