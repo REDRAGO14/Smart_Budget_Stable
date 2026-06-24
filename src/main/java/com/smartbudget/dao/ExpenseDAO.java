@@ -4,7 +4,10 @@ import com.smartbudget.database.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import com.smartbudget.models.Expense;
 public class ExpenseDAO {
 
     // ADD EXPENSE
@@ -27,4 +30,33 @@ public class ExpenseDAO {
         }
         return false;
     }
+}
+
+
+public List<Expense> getExpensesByUser(int userId) {
+    List<Expense> list = new ArrayList<>();
+    String sql = "SELECT * FROM expenses WHERE user_id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, userId);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Expense expense = new Expense();
+
+                expense.setExpenseId(rs.getInt("expense_id"));
+                expense.setAmount(rs.getDouble("amount"));
+                expense.setDescription(rs.getString("description"));
+
+                list.add(expense);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return list;
 }
